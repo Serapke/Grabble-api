@@ -18,10 +18,10 @@ ActiveRecord::Schema.define(version: 20170103100258) do
   create_table "users", force: :cascade do |t|
     t.string   "nickname"
     t.string   "auth_token"
-    t.integer  "score"
+    t.integer  "score",      default: 0, null: false
     t.integer  "place"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
 end
