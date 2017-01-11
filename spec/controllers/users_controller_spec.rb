@@ -37,4 +37,40 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
+  describe "GET #get_leaderboard" do
+    before(:each) do
+      best_user = FactoryGirl.create :scorer1000
+      mid_user = FactoryGirl.create :scorer100
+      worst_user = FactoryGirl.create :scorer10
+      get :get_leaderboard
+      @user_response = JSON.parse(response.body, symbolize_names: true)
+    end
+
+    it "renders all users" do
+      expect(@user_response.length).to eq(3)
+    end
+
+    it "renders users in correct order" do
+      expect(@user_response[0][:nickname]).to eq("scorer1000")
+    end
+
+    it { should respond_with 200 }
+  end
+
+  describe "POST #update_place" do
+    before(:each) do
+      best_user = FactoryGirl.create :scorer1000
+      mid_user = FactoryGirl.create :scorer100
+      worst_user = FactoryGirl.create :scorer10
+      request.headers['Authorization'] =  worst_user.auth_token
+      post :update_place, params: { user: { score: 101 }}
+      @user_response = JSON.parse(response.body, symbolize_names: true)
+    end
+
+    it "renders the updated user info" do
+      expect(@user_response[:place]).to eq(2)
+    end
+
+    it { should respond_with 200 }
+  end
 end
