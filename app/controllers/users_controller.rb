@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   end
 
   def get_leaderboard
-    @users = User.all.order(score: :desc)
+    @users = User.all.order(:place)
     render json: @users, except: [:auth_token, :created_at, :updated_at], status: 200
   end
 
